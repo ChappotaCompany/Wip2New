@@ -4,9 +4,7 @@
 
 
         <semantic:content>
-<!-- RAM -->
-<!-- RAM -->
-<!-- RAM -->
+
             <Panel headerText="" >
                 <content>
                     <VBox fitContainer="true">
