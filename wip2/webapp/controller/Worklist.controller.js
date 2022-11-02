@@ -118,7 +118,17 @@ sap.ui.define([
 				});
 			}
 		},
-      
+        _projsearch : function(oEvent){
+            var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter(
+				"ProjectID",
+				FilterOperator.Contains,
+				sValue
+			);
+			this.byId("projecttable").getBinding("items").filter([oFilter]);
+
+        },
+        
 
         // **************************************************** */
         //              CUSTOMER DATA                           //
@@ -406,21 +416,23 @@ sap.ui.define([
                 objectId: oItem.getBindingContext().getPath().substring("/ProjectSet".length)
             });
         },
-
-        /**
+         /**
          * Internal helper method to apply both filter and search state together on the list binding
          * @param {sap.ui.model.Filter[]} aTableSearchState An array of filters for the search
          * @private
          */
         _applySearch: function(aTableSearchState) {
-            var oTable = this.byId("table"),
-                oViewModel = this.getModel("worklistView");
+            var oTable = this.byId("projecttable"),
+                oViewModel = this.getModel("s2");
             oTable.getBinding("items").filter(aTableSearchState, "Application");
             // changes the noDataText of the list in case there are no filter results
             if (aTableSearchState.length !== 0) {
                 oViewModel.setProperty("/tableNoDataText", this.getResourceBundle().getText("worklistNoDataWithSearchText"));
             }
-        }
+        },
+      
+
+       
 
     });
 });
