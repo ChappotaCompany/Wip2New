@@ -26,87 +26,28 @@
                     </Toolbar>
                 </items>
             </FlexBox>
-         <Toolbar width="100%" id="toolbar2" height="130px">
-            <form:SimpleForm id="SimpleFormDisplay354wideDual" editable="false" 
-            layout="ResponsiveGridLayout" 
-                                            
-            columnsXL="3" columnsL="3" columnsM="3" >
-  <Label text="{i18n>txt_projname}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjectName}" />
-                        <Label text="{i18n>txt_custname}" />
-                        <ObjectStatus state="Information" text="{prjlst>/CustomerName}"  />
-                        <Label text="{i18n>txt_projcntrlr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjControllerName}" />
+            <Toolbar width="100%" id="toolbar2" height="130px">
+                <form:SimpleForm editable="false" layout="ResponsiveGridLayout"
+                 columnsXL="3" columnsL="3" columnsM="3">
+                  <form:content>
+              	<core:Title/>
+                    <Label text="{i18n>txt_projname}" />
+                    <ObjectStatus state="Information" text="{prjlst>/ProjectName}" />
+                    <Label text="{i18n>txt_custname}" />
+                    <ObjectStatus state="Information" text="{prjlst>/CustomerName}" />
+                    <Label text="{i18n>txt_projcntrlr}" />
+                    <ObjectStatus state="Information" text="{prjlst>/ProjControllerName}" />
+                   
+                	<core:Title/>         
+                 <Label text="{i18n>txt_projmngr}" />
+                <ObjectStatus state="Information" text="{prjlst>/ProjManagerName}" />
+                <Label text="{i18n>txt_projprntnr}" />
+                <ObjectStatus state="Information" text="{prjlst>/ProjPartnerName}" />
+                 </form:content>
+                 </form:SimpleForm>
+            </Toolbar>
 
- <Label text="{i18n>txt_projmngr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjManagerName}" />
-                        <Label text="{i18n>txt_projprntnr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjPartnerName}" />
-
-            </form:SimpleForm>
-          </Toolbar> 
-
-            <!-- <Toolbar width="100%" id="toolbar2" height="130px">
-                <f:SimpleForm
-                    width="600px"
-                    editable="true"
-                    layout="ResponsiveGridLayout"
-                    labelSpanXL="4"
-                    labelSpanL="3"
-                    labelSpanM="4"
-                    labelSpanS="12"
-                    adjustLabelSpan="false"
-                    emptySpanXL="0"
-                    emptySpanL="4"
-                    emptySpanM="0"
-                    emptySpanS="0"
-                    columnsXL="2"
-                    columnsL="1"
-                    columnsM="1"
-                    singleContainerFullSize="false"
-                    breakpointL="0"
-                    breakpointM="0"
-                    breakpointXL="0"
-                >
-                    <f:content>
-                        <Label text="{i18n>txt_projname}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjectName}" />
-                        <Label text="{i18n>txt_custname}" />
-                        <ObjectStatus state="Information" text="{prjlst>/CustomerName}"  />
-                        <Label text="{i18n>txt_projcntrlr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjControllerName}" />
-                    </f:content>
-                </f:SimpleForm>
-
-                <ToolbarSpacer />
-                <f:SimpleForm
-                    editable="true"
-                    layout="ResponsiveGridLayout"
-                    labelSpanXL="4"
-                    labelSpanL="3"
-                    labelSpanM="4"
-                    labelSpanS="12"
-                    adjustLabelSpan="false"
-                    emptySpanXL="0"
-                    emptySpanL="4"
-                    emptySpanM="0"
-                    emptySpanS="0"
-                    columnsXL="2"
-                    columnsL="1"
-                    columnsM="1"
-                    singleContainerFullSize="false"
-                    breakpointL="0"
-                    breakpointM="0"
-                    breakpointXL="0"
-                >
-                    <f:content>
-                        <Label text="{i18n>txt_projmngr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjManagerName}" />
-                        <Label text="{i18n>txt_projprntnr}" />
-                        <ObjectStatus state="Information" text="{prjlst>/ProjPartnerName}" />
-                    </f:content>
-                </f:SimpleForm>
-            </Toolbar> -->
+         
 
             <IconTabBar id="idIconTabBar" select=".onFilterSelect" class="sapUiResponsiveContentPadding">
                 <items>

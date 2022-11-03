@@ -190,6 +190,7 @@ sap.ui.define([
 
             }
             this.byId("popovernotes").setText(notes);
+            this.byId("popovernotes1").setPlacement(sap.m.PlacementType.Left);
             this.noteslink.openBy(oButton);
         },
 
