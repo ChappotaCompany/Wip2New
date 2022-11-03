@@ -649,6 +649,11 @@ sap.ui.define([
                 this.getView().byId("editrightnotes").setValue(notes);
                 
             } else {
+                //check if the wp,personalnumber,acttype are same
+
+
+
+
                 this.getView().byId("editleftunbilamnt").setText(this.multilabel);
                 this.getView().byId("editleftwpkg").setText(this.multilabel);
                 this.getView().byId("editleftnotes").setText(this.multilabel);
