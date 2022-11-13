@@ -115,7 +115,27 @@
                                                         <Label text="{i18n>txt_proj}" design="Standard" width="231.40625px" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                                     </form:label>
                                                     <form:fields>
-                                                        <Input enabled="true" value="{prjlst>/ProjectID}" id="editrightprojectid" showValueHelp="true"/>
+                                                        <!-- <Input enabled="true" value="{prjlst>/ProjectID}" id="editrightprojectid" showValueHelp="true" /> -->
+                                                          <!-- <MultiInput id="editrightprojectid" width="40%" suggestionItems="{
+                                                                                path: 's2>/',
+                                                                                sorter: { path: 'ProjectID' }
+                                                                            }" valueHelpRequest="_projectdata" submit="_projsearch"> 
+                                                            <core:Item key="{s2>ProjectID}" text="{s2>ProjectID}"/>
+                                                        </MultiInput>      -->
+                                                          <Input
+                                                            id="editrightprojectid"
+                                                            
+                                                            showSuggestion="true"
+                                                            showValueHelp="true"
+                                                            valueHelpRequest="_projectdata"
+                                                            suggestionItems="{
+                                                                                path: 's2>/',
+                                                                                sorter: { path: 'ProjectID' }
+                                                                            }">
+                                                            <suggestionItems>
+                                                                <core:Item key="{s2>ProjectID}" text="{s2>ProjectID}"/>
+                                                            </suggestionItems>
+                                                        </Input>  
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement visible="true">
@@ -131,7 +151,21 @@
                                                         <Label text="{i18n>txt_wrkpckg}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                                     </form:label>
                                                     <form:fields>
-                                                        <Input id="editrightwpkg" showValueHelp="true"/>
+                                                        <!-- <Input id="editrightwpkg" showValueHelp="true"/> -->
+                                                         <Input
+                                                            id="editrightwpkg"
+                                                            
+                                                            showSuggestion="true"
+                                                            showValueHelp="true"
+                                                            valueHelpRequest="_wpdata"
+                                                            suggestionItems="{
+                                                                                path: 's2>/',
+                                                                                sorter: { path: 'ProjectID' }
+                                                                            }">
+                                                            <suggestionItems>
+                                                                <core:Item key="{s2>ProjectID}" text="{s2>ProjectID}"/>
+                                                            </suggestionItems>
+                                                        </Input>  
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement visible="true">

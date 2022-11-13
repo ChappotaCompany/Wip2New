@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+   xmlns="sap.m" xmlns:t="sap.ui.table"
+   xmlns:core="sap.ui.core" 	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+>
+                    <SelectDialog
+                        id="workpkgtabledata1"
+                        title="WorkPackage"
+                        items="{wrkpkg>/}" showClearButton="true"
+                        search="_handleValueHelpSearchwp"
+                        confirm="_handleValueHelpClosewp"
+                        cancel="_handleValueHelpClosewp"
+                        multiSelect="false">
+                        <StandardListItem
+                           
+                            title="{wrkpkg>WorkPackageID}"
+                            description="{wrkpkg>WorkPackageName}" />
+                    </SelectDialog>
+
+
+  
+</core:FragmentDefinition>
