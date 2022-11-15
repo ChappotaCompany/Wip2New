@@ -223,7 +223,7 @@
                                     <content>
                                         <ToolbarSpacer />
                                         <Button text="Create BDR" press="_showBDRMessage" />
-                                        <Button text="Review Again" press="_showReviewMessage" />
+                                        <Button text="Review Again" press="_reviewAgain" />
                                     </content>
                                 </Toolbar>
                             </headerToolbar>
@@ -294,7 +294,7 @@
                                         <ObjectStatus text="{rtobill>ActivityType}" />
                                         <ObjectStatus text="{rtobill>EmployeeID}" />
                                         <ObjectStatus text="{path : 'rtobill>ServiceDate',formatter:'.formatter.dateTime'}" />
-                                        <Link text="{rtobill>Notes}" width="80px" press="_notespopover" wrapping="false" />
+                                        <Link text="{rtobill>Notes}" width="80px" press="_notespopoverrtb" wrapping="false" />
                                         
                                     </cells>
                                 </ColumnListItem>
