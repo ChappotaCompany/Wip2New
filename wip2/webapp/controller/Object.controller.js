@@ -717,12 +717,13 @@ sap.ui.define([
                     });
                 }
                
-
+                else
 
                 //jemap.set(jeid, ind);
                 if(status === 'New' || 'Updated' || 'Deleted'){
                     MessageBox.show("New/Updated/Deleted Cannot be Billed");
                     sap.ui.core.BusyIndicator.hide();
+                    this.byId("wiptable").removeSelections();
                 }
                 // if (status === 'Updated') {
 
