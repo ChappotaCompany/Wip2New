@@ -556,6 +556,9 @@ sap.ui.define([
                         }
                     });
                 }
+                else if(status === 'Deleted'){
+                    this.byId("wiptable").removeSelections();
+                }
             }
             //jemap.clear();
 
@@ -573,6 +576,7 @@ sap.ui.define([
             //var nvalue =	oTable.getItems()[i].getCells()[i].getText();  
             var selectedItems = oTable._aSelectedPaths;
             var updatedcount = 0, originalcount = 0;
+            sap.ui.core.BusyIndicator.show(0);
 
             for (var i = 0; i < selectedItems.length; i++) {
                 var ind = selectedItems[i].slice(1);
@@ -626,35 +630,56 @@ sap.ui.define([
 
                 if (status === 'New') {
                     var wipsaves = this.getOwnerComponent().getModel("wipsavesMDL");
-                    wipsaves.create("/TimeSheetEntryCollection", finalRecordPayload, {
-                        success: (odata) => {
-                            this._deletejeRecord(jeid);
-                            //this._getwipprojectdata();
-                            MessageToast.show("Record posted");
-                            this.byId("wiptable").removeSelections();
-
-                        },
-                        error: (err) => {
-                            MessageToast.show(err);
-                            this.byId("wiptable").removeSelections();
-                        }
-                    });
+                    var that = this;
+                return new Promise(
+                    function(resolve,reject){
+                        wipsaves.create("/TimeSheetEntryCollection", finalRecordPayload, {
+                            success: (odata) => {
+                                resolve(odata);
+                                that._deletefromwip();
+                               
+                               
+                                MessageToast.show("Record posted");
+                                that.byId("wiptable").removeSelections();
+                                that._getwipprojectdata();
+                                that._tableDataReusable();
+                                sap.ui.core.BusyIndicator.hide();
+    
+                            },
+                            error: (err) => {
+                                reject(err);
+                                MessageToast.show(err);
+                                that.byId("wiptable").removeSelections();
+                                sap.ui.core.BusyIndicator.hide();
+                            }
+                        });
+                    }
+                );
+                   
                 }
                 if (status === 'Updated' || status === 'Deleted') {
                     var wipsaves = this.getOwnerComponent().getModel("wipsavesMDL");
                     var wipwithaied = "/TimeSheetEntryCollection";
                     wipsaves.create(wipwithaied, finalRecordPayload, {
                         success: (odata) => {
-                            this._deletejeRecord(jeid);
+                            this._deletefromwip();
+                            //this._deletejeRecord(jeid);
                             MessageToast.show("Record posted");
                             this.byId("wiptable").removeSelections();
                             this._getwipprojectdata();
+                            sap.ui.core.BusyIndicator.hide();
                         },
                         error: (err) => {
                             MessageToast.show(err);
                             this.byId("wiptable").removeSelections();
+                            sap.ui.core.BusyIndicator.hide();
                         }
                     });
+                }
+                if (status === 'Original') {
+                    MessageToast.show("Cannot Post/Submit Original ");
+                    this.byId("wiptable").removeSelections();
+                    sap.ui.core.BusyIndicator.hide();
                 }
             }
         },
@@ -1097,6 +1122,8 @@ sap.ui.define([
                 }
             });
         },
+
+        // deleteformwip is a temporary method to move the updated or deleted record to Original or back into JnrlEntries
         _deletefromwip : function(){
             var oTable = this.getView().byId("wiptable");
 
