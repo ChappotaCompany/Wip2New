@@ -628,7 +628,7 @@ sap.ui.define([
                     var wipsaves = this.getOwnerComponent().getModel("wipsavesMDL");
                     wipsaves.create("/TimeSheetEntryCollection", finalRecordPayload, {
                         success: (odata) => {
-                            this._deleteWIPEdit(jeid);
+                            this._deletejeRecord(jeid);
                             //this._getwipprojectdata();
                             MessageToast.show("Record posted");
                             this.byId("wiptable").removeSelections();
@@ -645,7 +645,7 @@ sap.ui.define([
                     var wipwithaied = "/TimeSheetEntryCollection";
                     wipsaves.create(wipwithaied, finalRecordPayload, {
                         success: (odata) => {
-                            this._deleteWIPEdit(jeid);
+                            this._deletejeRecord(jeid);
                             MessageToast.show("Record posted");
                             this.byId("wiptable").removeSelections();
                             this._getwipprojectdata();
@@ -943,6 +943,9 @@ sap.ui.define([
                         MessageBox.alert("Please select atleast 1 row to edit");
                         return;
                     }
+                    var map1 = new Map();
+                    if(selectedItems.length > 1) map1.set("Multi",true); 
+                    else map1.set("Multi",false); 
                 
                     var ind = selectedItems[0].slice(1);
                     for (var j = 0; j < oTable.getColumns().length; j++) {
@@ -957,7 +960,6 @@ sap.ui.define([
                     if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_srvcrenddate")) var servdate = oTable.getItems()[ind].getCells()[j].getText();
 
                     }
-                    // this.byId("wiptable").removeSelections();
                     var deleteapi = this.getOwnerComponent().getModel("wipeditsMDL");
                     if(status === 'Original'){
                         //Insert WIP Edit with status '03'
@@ -1095,26 +1097,212 @@ sap.ui.define([
                 }
             });
         },
-        _deletejeRecord: function (jeid) {
-
+        _deletefromwip : function(){
             var oTable = this.getView().byId("wiptable");
-            //var nvalue =	oTable.getItems()[i].getCells()[i].getText();  
+
             var selectedItems = oTable._aSelectedPaths;
             var ind = selectedItems[0].slice(1);
             for (var j = 0; j < oTable.getColumns().length; j++) {
-
-                if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_jeid")) var jeid = oTable.getItems()[ind].getCells()[j].getText();
-
-
+              
+            if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_jeid")) var jeid = oTable.getItems()[ind].getCells()[j].getText();
+    
             }
-            if (selectedItems.length < 1) {
-                MessageBox.alert("Please select atleast 1 row to edit");
-                return;
-            }
+            var delapi = this.getOwnerComponent().getModel("wipeditsMDL");
+                    var filterjeid = new Filter("JEID", FilterOperator.EQ, jeid);        
+                    delapi.read("/YY1_WIPEDITS", {
+                        filters: [filterjeid],
+                        success: (odata) => {
+                            if(odata.results[0]===undefined){
+                                MessageToast.show("Original Record Only");
+                                this.byId("wiptable").removeSelections();
+                                return;
+                            }
+                            var esetguid = odata.results[0].SAP_UUID;         
+                 
+                            var esetwithguid = "/YY1_WIPEDITS(guid'" + esetguid + "')";
+                            var that = this;
+                            return new Promise(
+                                function(resolve,reject){
+                                        delapi.remove(esetwithguid, {
+                                            success : function(odata) {    
+                                                sap.ui.core.BusyIndicator.hide();                      
+                                               resolve(odata);    
+                                                     
+                                               that._getwipprojectdata(); 
+                                                         
+                                            },
+                                            error : function(err) {
+                                                sap.ui.core.BusyIndicator.hide();
+                                                reject(error);                                                   
+            
+                                            }
+                                            });
+            
+                                        }             
+                            );
 
-            for (var i = 0; i < selectedItems.length; i++) {
-                this._deleteWIPEdit(jeid);
-            }
+                        },
+                        error : (msg)=>{
+
+                        }
+                    });
+
+        },
+        _deletejeRecord: function (jeid) {
+            console.log("delete called!!!");
+            var oTable = this.getView().byId("wiptable");
+            var delapi = this.getOwnerComponent().getModel("wipeditsMDL");
+           
+            
+            var selectedItems = oTable._aSelectedPaths;
+            var updatedcount = 0, originalcount = 0;
+            var delmap = new Map();
+            if (selectedItems.length > 1) delmap.set("Multi", true); else delmap.set("Multi", false);
+           // for (var i = 0; i < selectedItems.length; i++) { }
+               // var ind = selectedItems[i].slice(1);
+                for (var j = 0; j < oTable.getColumns().length; j++) {
+                    var ind = selectedItems[0].slice(1);
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_chngind")) var status = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_jeid")) var jeid = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_unbqty")) var unbqty = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_wrkpckg")) var wrkpkg = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_notes")) var notes = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_acttype")) var actype = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_prnr")) var prnr = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_srvcrenddate")) var servdate = oTable.getItems()[ind].getCells()[j].getText();
+                    if (oTable.getColumns()[j].getHeader().getText() === this.getView().getModel("i18n").getResourceBundle().getText("txt_proj")) var projid = oTable.getItems()[ind].getCells()[j].getText();
+
+                }
+                var filterjeid = new Filter("JEID", FilterOperator.EQ, jeid);
+                var projidfilter = new Filter("ProjectID",FilterOperator.EQ,this.pid);
+                //Perform an update, if it has already been updated or created
+                //delmap.set(jeid, ind);
+                if (status === 'Updated')  {
+                    var editpayload = {
+                        JEID: jeid,
+                        Status: "03",
+                        ID: "1",
+                        ProjectID: projid,
+                        Quantity: unbqty,
+                        WBS: wrkpkg,
+                        Notes: notes,
+                        ActivityType: actype,
+                        EmployeeID: prnr,
+                        ServiceDate: this.formatter.dateTimebackendwithtime(servdate)
+                    };
+                    delapi.read("/YY1_WIPEDITS", {
+                        filters: [filterjeid],
+                        success: (odata) => {
+                    var esetguid = odata.results[0].SAP_UUID;   
+                                var esetwithguid = "/YY1_WIPEDITS(guid'" + esetguid + "')";                               
+                    delapi.update(esetwithguid, editpayload, {               
+                        
+                        success: (odata) => {
+                            this._getwipprojectdata();
+                            this.byId("wiptable").removeSelections();
+                            sap.ui.core.BusyIndicator.hide();
+                        },
+                        error: (err) => {
+                            sap.ui.core.BusyIndicator.hide();
+                            MessageToast.show(err);
+
+
+                        }
+                    });
+
+
+                },
+                error : (msg)=>{
+
+                }
+            });
+
+                } else 
+                
+                if (status === 'Original') {
+                    var editpayload = {
+                        JEID: jeid,
+                        Status: "03",
+                        ID: "1",
+                        ProjectID: projid,
+                        Quantity: unbqty,
+                        WBS: wrkpkg,
+                        Notes: notes,
+                        ActivityType: actype,
+                        EmployeeID: prnr,
+                        ServiceDate: this.formatter.dateTimebackendwithtime(servdate)
+                    };
+                  
+                    var esetwithguid = "/YY1_WIPEDITS";                               
+                    delapi.create(esetwithguid,editpayload,{               
+                        
+                        success: (odata) => {
+                            this._getwipprojectdata();
+                            this.byId("wiptable").removeSelections();
+                            sap.ui.core.BusyIndicator.hide();
+                        },
+                        error: (err) => {
+                            sap.ui.core.BusyIndicator.hide();
+                            MessageToast.show(err);
+
+
+                        }
+                    });
+
+
+               
+                }
+                else if (status === 'Deleted') {
+                    this.byId("wiptable").removeSelections();
+                }
+                else if(status === 'New'){
+                   
+                    
+                    sap.ui.core.BusyIndicator.show(0);
+        
+                    delapi.read("/YY1_WIPEDITS", {
+                        filters: [filterjeid],
+                        success: (odata) => {
+                            sap.ui.core.BusyIndicator.hide();
+                    
+                                var esetguid = odata.results[0].SAP_UUID;   
+                                var esetwithguid = "/YY1_WIPEDITS(guid'" + esetguid + "')";
+                            var index = delmap.get(odata.results[0].JEID);
+                            debugger;
+                            var that = this;
+                            return new Promise(
+                                function(resolve,reject){
+                                        delapi.remove(esetwithguid, {
+                                            success : function(odata) {    
+                                                sap.ui.core.BusyIndicator.hide();                      
+                                               resolve(odata);    
+                                                     
+                                               that._getwipprojectdata(); 
+                                                         
+                                            },
+                                            error : function(err) {
+                                                sap.ui.core.BusyIndicator.hide();
+                                                reject(error);                                                   
+            
+                                            }
+                                            });
+            
+                                        }             
+                            );
+    
+        
+                    
+                          
+                        },
+                        error : (msg) => {
+                            MessageBox.show(msg);
+                            sap.ui.core.BusyIndicator.hide();
+                            this.byId("wiptable").removeSelections();
+                        }
+                    });
+                }
+            
+      
 
         },
 
