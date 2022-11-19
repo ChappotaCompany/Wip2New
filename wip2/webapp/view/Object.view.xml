@@ -119,6 +119,7 @@
                                             </MenuButton>
 
                                             <Button text="{i18n>txt_delete}" width="auto" press="_deletejeRecord" />
+                                            <Button text="D from WIP" width="auto" press="_deletefromwip" />
                                             <Button text="{i18n>txt_transfer}" width="auto" visible="false" />
                                             <Button text="{i18n>txt_combine}" width="auto" />
 
@@ -207,7 +208,7 @@
                                             <ObjectStatus state="{= ${wipentry>StatusObject} === undefined ? 'Success' : ${wipentry>StatusObject}}" text="{wipentry>OriginCostCtrActivityType}" />
                                             <ObjectStatus state="{= ${wipentry>StatusObject} === undefined ? 'Success' : ${wipentry>StatusObject}}" text="{wipentry>PersonnelNumber}" />                                          
                                             <ObjectStatus state="{= ${wipentry>StatusObject} === undefined ? 'Success' : ${wipentry>StatusObject}}" text="{path : 'wipentry>ServicesRenderedDate',formatter:'.formatter.dateTime'}" />
-                                            <Link text="{wipentry>DocumentItemText}" width="80px" press="_notespopover" wrapping="false" />
+                                            <Link text="{wipentry>DocumentItemText}" width="80px" press="_notespopover" wrapping="false"  />
                                             <ObjectStatus state="{= ${wipentry>StatusObject} === undefined ? 'Success' : ${wipentry>StatusObject}}" text="{wipentry>WorkItem}" />
                                           
                                         </cells>
