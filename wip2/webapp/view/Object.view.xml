@@ -119,7 +119,7 @@
                                             </MenuButton>
 
                                             <Button text="{i18n>txt_delete}" width="auto" press="_deletejeRecord" />
-                                            <Button text="D from WIP" width="auto" press="_deletefromwip" />
+                                            <Button text="Master Revert" width="auto" press="_deletefromwip" />
                                             <Button text="{i18n>txt_transfer}" width="auto" visible="false" />
                                             <Button text="{i18n>txt_combine}" width="auto" />
 
